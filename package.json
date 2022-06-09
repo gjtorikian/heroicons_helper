@@ -1,0 +1,13 @@
+{
+  "name": "heroicons_helper",
+  "private": true,
+  "devDependencies": {
+    "cheerio": "1.0.0-rc.11",
+    "heroicons": "^1.0.6",
+    "fs-extra": "^7.0.1",
+    "globby": "11.0.0",
+    "lodash.merge": "4.6.2",
+    "trim-newlines": "3.0.1",
+    "yargs": "15.1.0"
+  }
+}
