@@ -3,12 +3,6 @@
 require "test_helper"
 
 describe HeroiconsHelper::Icon do
-  it "fails when the icon not exists in heroicons" do
-    assert_raises(RuntimeError) do
-      heroicons(:not_exist, "outline")
-    end
-  end
-
   it "initialize accepts a string for an icon with variant" do
     icon = heroicons("x", "outline")
     assert icon
@@ -22,6 +16,37 @@ describe HeroiconsHelper::Icon do
     assert_equal "outline", icon.variant
     assert_equal 24, icon.width
     assert_equal 24, icon.height
+  end
+
+  it "errors on invalid name" do
+    assert_raises ArgumentError do
+      heroicons(:not_exist, "outline")
+    end
+
+    assert_raises ArgumentError do
+      heroicons(nil, "solid")
+    end
+
+    assert_raises ArgumentError do
+      heroicons(25, "solid")
+    end
+    assert_raises ArgumentError do
+      refute heroicons([], "solid")
+    end
+  end
+
+  it "errors on invalid variant" do
+    assert_raises ArgumentError do
+      heroicons("x", "blarf")
+    end
+
+    assert_raises ArgumentError do
+      heroicons("x", 53)
+    end
+
+    assert_raises ArgumentError do
+      heroicons("x", [])
+    end
   end
 
   describe "viewBox" do
