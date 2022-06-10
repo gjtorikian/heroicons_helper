@@ -55,19 +55,21 @@ module HeroiconsHelper
     end
 
     def get_heroicon(symbol, variant)
-      raise ArgumentError, "Icon name can't be empty" unless !symbol.to_s.empty?
-      raise ArgumentError, "Variant `#{variant}` is invalid; must be one of #{VARIANTS.join(", ")}" unless VARIANTS.include?(variant.to_s)
+      symbol_s = symbol.to_s
+      raise ArgumentError, "Icon name can't be empty" if symbol_s.empty?
+      variant_s = variant.to_s
+      raise ArgumentError, "Variant `#{variant.inspect}` is invalid; must be one of #{VARIANTS.join(", ")}" unless VARIANTS.include?(variant_s)
 
-      icon = HeroiconsHelper::ICON_SYMBOLS[symbol]
+      icon = HeroiconsHelper::ICON_SYMBOLS[symbol_s]
 
       raise ArgumentError, "Couldn't find Heroicon for `#{symbol.inspect}`" unless icon
 
-      icon_in_variant = icon["variants"][variant]
+      icon_in_variant = icon["variants"][variant_s]
       raise ArgumentError, "Heroicon for `#{symbol.inspect}` doesn't have variant `#{variant.inspect}`" unless icon_in_variant
 
       {
         "name" => icon["name"],
-        "variant" => variant,
+        "variant" => variant_s,
         "width" => icon_in_variant["width"],
         "height" => icon_in_variant["height"],
         "path" => icon_in_variant["path"],

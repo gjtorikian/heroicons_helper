@@ -8,6 +8,11 @@ describe HeroiconsHelper::Icon do
     assert icon
   end
 
+  it "initialize accepts a symbol for an icon with variant" do
+    icon = heroicons(:x, "outline")
+    assert icon
+  end
+
   it "the attributes are readable" do
     icon = heroicons("x", "outline")
     assert icon.path
