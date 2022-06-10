@@ -9,7 +9,7 @@ module HeroiconsHelper
   file_data = File.read(File.join(File.dirname(__FILE__), "./heroicons_helper/data.json"))
   ICON_SYMBOLS = JSON.parse(file_data).freeze
 
-  def heroicons(symbol, variant, attributes: {})
+  def heroicon(symbol, variant, attributes: {})
     ::HeroiconsHelper::Icon.new(symbol, variant, attributes: attributes)
   end
 end

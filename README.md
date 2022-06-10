@@ -22,10 +22,10 @@ require "heroicons_helper"
 include HeroiconsHelper
 ```
 
-You'll have a brand new method called `heroicons` whose signature looks like this:
+You'll have a brand new method called `heroicon` whose signature looks like this:
 
 ```ruby
-heroicons(symbol, variant, attributes: {})
+heroicon(symbol, variant, attributes: {})
 ```
 
 where
@@ -37,7 +37,7 @@ where
 This one method call returns an object that represents the Heroicon, and you should call `to_svg` to get the resulting SVG string:
 
 ```ruby
-outline_icon = heroicons("x", "outline")
+outline_icon = heroicon("x", "outline")
 puts outline_icon.to_svg
 ```
 ```
@@ -58,7 +58,7 @@ icons_to_preload = [{
 },]
 
 HeroiconsHelper::Cache.preload!(icons_to_preload) do |found, icon|
-    # An instance of `FakeClass` is stored in the cache
+    # An instance of `FakeClass` will be stored in the cache
     FakeClass.new(icon) unless found
 end
 ```
