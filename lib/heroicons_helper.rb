@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require_relative "heroicons_helper/version"
+require_relative "heroicons_helper/cache"
 require_relative "heroicons_helper/icon"
 require "json"
 

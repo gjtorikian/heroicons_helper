@@ -44,6 +44,32 @@ puts outline_icon.to_svg
 => <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"></path></svg>
 ```
 
+## Cache
+
+This gem also comes with a simple caching system, which can be useful to preload icons. It works like this:
+
+``` ruby
+icons_to_preload = [{
+    name: "thumb-down",
+    variant: "outline",
+}, {
+    name: "refresh",
+    variant: "solid",
+},]
+
+HeroiconsHelper::Cache.preload!(icons_to_preload) do |found, icon|
+    # An instance of `FakeClass` is stored in the cache
+    FakeClass.new(icon) unless found
+end
+```
+
+`HeroiconsHelper::Cache.preload!` does one of two things:
+
+* If, given the `icons_to_preload` array, an item is located in the cache, `found` is true and `icon` is the cached item
+* Otherwise, `found` is false, and `icon` is the element currently being iterated. Also, the last line of the block sets the cache
+
+The Hash elements within `icons_to_preload` can also take `height` and `width` keys.
+
 ## Development
 
 To update the Heroicons set:

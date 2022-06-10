@@ -7,6 +7,7 @@ module HeroiconsHelper
 
     VARIANT_OUTLINE = "outline"
     VARIANT_SOLID = "solid"
+    VARIANTS = [VARIANT_OUTLINE, VARIANT_SOLID].freeze
 
     def initialize(symbol, variant, attributes: {})
       @symbol = symbol
@@ -58,7 +59,7 @@ module HeroiconsHelper
       raise "Couldn't find heroicons symbol for #{@symbol.inspect}" unless icon
 
       icon_in_variant = icon["variants"][variant]
-      raise "Heroicons symbol for #{@symbol.inspect} don't have variant #{@variant.inspect}" unless icon_in_variant
+      raise "Heroicons symbol for #{@symbol.inspect} doesn't have variant #{@variant.inspect}" unless icon_in_variant
 
       {
         "name" => icon["name"],
