@@ -77,6 +77,19 @@ describe HeroiconsHelper::Icon do
       assert_includes icon.to_svg, "disabled=\"true\""
       assert_includes icon.to_svg, "foo=\"bar\""
     end
+
+    it "ignores nil html attributes" do
+      icon = heroicon("x", variant: HeroiconsHelper::Icon::VARIANT_SOLID, foo: "bar", disabled: nil)
+      refute_includes icon.to_svg, "disabled"
+      assert_includes icon.to_svg, "foo=\"bar\""
+    end
+
+    it "accepts splatted html attributes" do
+      attributes = { foo: "bar", disabled: "true" }
+      icon = heroicon("x", variant: HeroiconsHelper::Icon::VARIANT_SOLID, **attributes)
+      assert_includes icon.to_svg, "disabled=\"true\""
+      assert_includes icon.to_svg, "foo=\"bar\""
+    end
   end
 
   describe "classes" do

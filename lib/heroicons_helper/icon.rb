@@ -19,7 +19,7 @@ module HeroiconsHelper
       @width = heroicon["width"]
       @height = heroicon["height"]
       @keywords = heroicon["keywords"]
-      @attributes = attributes.dup
+      @attributes = attributes.dup.compact
       @attributes[:class] = classes
       @attributes[:viewBox] = viewbox
       @attributes.merge!(size)
