@@ -1,6 +1,6 @@
 # HeroiconsHelper
 
-This gem helps you use Heroicons in your Ruby projects. It's inspired by [heroicons-ruby](https://github.com/chunlea/heroicons-ruby) and [octicons](https://github.com/primer/octicons).
+This gem helps you use Heroicons in your Ruby projects. It's inspired by [heroicons-ruby](https://github.com/chunlea/heroicons-ruby) and [octicons_gem](https://github.com/primer/octicons/tree/main/lib/octicons_gem).
 
 ## Installation
 
