@@ -3,6 +3,10 @@
 require "test_helper"
 
 describe HeroiconsHelper::Icon do
+  def setup
+    HeroiconsHelper::Cache.clear!
+  end
+
   it "initialize accepts a string for an icon name" do
     icon = heroicon("x", variant: HeroiconsHelper::Icon::VARIANT_SOLID)
     assert icon

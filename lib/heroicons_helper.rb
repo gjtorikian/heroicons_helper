@@ -10,6 +10,19 @@ module HeroiconsHelper
   ICON_NAMES = JSON.parse(file_data).freeze
 
   def heroicon(name, variant:, **attributes)
-    ::HeroiconsHelper::Icon.new(name, variant, attributes: attributes)
+    cache_key = HeroiconsHelper::Cache.get_key(
+      name: name,
+      variant: variant,
+      height: attributes[:height],
+      width: attributes[:width]
+    )
+
+    cached_heroicon = HeroiconsHelper::Cache.read(cache_key)
+    return cached_heroicon unless cached_heroicon.nil?
+
+    heroicon = ::HeroiconsHelper::Icon.new(name, variant, attributes: attributes)
+    HeroiconsHelper::Cache.set(cache_key, heroicon)
+
+    heroicon
   end
 end
