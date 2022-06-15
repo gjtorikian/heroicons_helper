@@ -7,9 +7,9 @@ require "json"
 
 module HeroiconsHelper
   file_data = File.read(File.join(File.dirname(__FILE__), "./heroicons_helper/data.json"))
-  ICON_SYMBOLS = JSON.parse(file_data).freeze
+  ICON_NAMES = JSON.parse(file_data).freeze
 
-  def heroicon(symbol, variant:, **attributes)
-    ::HeroiconsHelper::Icon.new(symbol, variant, attributes: attributes)
+  def heroicon(name, variant:, **attributes)
+    ::HeroiconsHelper::Icon.new(name, variant, attributes: attributes)
   end
 end

@@ -3,12 +3,12 @@
 require "test_helper"
 
 describe HeroiconsHelper::Icon do
-  it "initialize accepts a string for an icon" do
+  it "initialize accepts a string for an icon name" do
     icon = heroicon("x", variant: HeroiconsHelper::Icon::VARIANT_SOLID)
     assert icon
   end
 
-  it "initialize accepts a symbol for an icon" do
+  it "initialize accepts a symbol for an icon name" do
     icon = heroicon(:x, variant: HeroiconsHelper::Icon::VARIANT_SOLID)
     assert icon
   end
@@ -17,7 +17,7 @@ describe HeroiconsHelper::Icon do
     icon = heroicon("x", variant: HeroiconsHelper::Icon::VARIANT_OUTLINE)
     assert icon.path
     assert icon.attributes
-    assert_equal "x", icon.symbol
+    assert_equal "x", icon.name
     assert_equal "outline", icon.variant
     assert_equal 24, icon.width
     assert_equal 24, icon.height

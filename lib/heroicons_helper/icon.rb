@@ -3,17 +3,17 @@
 module HeroiconsHelper
   # Icon to show heroicons by name and variant.
   class Icon
-    attr_reader :path, :attributes, :width, :height, :symbol, :variant, :keywords
+    attr_reader :path, :attributes, :width, :height, :name, :variant, :keywords
 
     VARIANT_OUTLINE = "outline"
     VARIANT_SOLID = "solid"
     VARIANTS = [VARIANT_OUTLINE, VARIANT_SOLID].freeze
 
-    def initialize(symbol, variant, attributes: {})
-      @symbol = symbol.to_s
+    def initialize(name, variant, attributes: {})
+      @name = name.to_s
       @variant = variant.to_s
 
-      heroicon = get_heroicon(@symbol, @variant)
+      heroicon = get_heroicon(@name, @variant)
 
       @path = heroicon["path"]
       @width = heroicon["width"]
@@ -54,7 +54,7 @@ module HeroiconsHelper
 
     # prepare the octicon class
     private def classes
-      "heroicon heroicon-#{@symbol}-#{@variant} #{@attributes[:class]} ".strip
+      "heroicon heroicon-#{@name}-#{@variant} #{@attributes[:class]} ".strip
     end
 
     private def variant_attributes
@@ -101,17 +101,17 @@ module HeroiconsHelper
       (width.to_i * @height) / @width
     end
 
-    private def get_heroicon(symbol, variant)
-      raise ArgumentError, "Icon name can't be empty" if symbol.empty?
+    private def get_heroicon(name, variant)
+      raise ArgumentError, "Icon name can't be empty" if name.empty?
 
       raise ArgumentError, "Variant `#{variant.inspect}` is invalid; must be one of #{VARIANTS.join(", ")}" unless VARIANTS.include?(variant)
 
-      icon = HeroiconsHelper::ICON_SYMBOLS[symbol]
+      icon = HeroiconsHelper::ICON_NAMES[name]
 
-      raise ArgumentError, "Couldn't find Heroicon for `#{symbol.inspect}`" unless icon
+      raise ArgumentError, "Couldn't find Heroicon for `#{name.inspect}`" unless icon
 
       icon_variant = icon["variants"][variant]
-      raise ArgumentError, "Heroicon for `#{symbol.inspect}` doesn't have variant `#{variant.inspect}`" unless icon_variant
+      raise ArgumentError, "Heroicon for `#{name.inspect}` doesn't have variant `#{variant.inspect}`" unless icon_variant
 
       {
         "name" => icon["name"],
