@@ -103,6 +103,16 @@ describe HeroiconsHelper::Icon do
     end
   end
 
+  describe "comments" do
+    it "includes variant and icon passed in" do
+      icon = heroicon("x", variant: HeroiconsHelper::Icon::VARIANT_SOLID, class: "text-closed")
+      assert_includes icon.to_svg, "<!-- Heroicon name: solid/x -->"
+
+      icon = heroicon(:"at-symbol", variant: HeroiconsHelper::Icon::VARIANT_OUTLINE, class: "text-closed")
+      assert_includes icon.to_svg, "<!-- Heroicon name: outline/at-symbol -->"
+    end
+  end
+
   describe "size" do
     it "always has width and height" do
       icon = heroicon("x", variant: HeroiconsHelper::Icon::VARIANT_SOLID)

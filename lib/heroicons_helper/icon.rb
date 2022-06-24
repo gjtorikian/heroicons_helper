@@ -30,7 +30,7 @@ module HeroiconsHelper
 
     # Returns an string representing a <svg> tag
     def to_svg
-      "<svg xmlns=\"http://www.w3.org/2000/svg\" #{html_attributes}>#{@path}</svg>"
+      "<!-- Heroicon name: #{@variant}/#{@name} --><svg xmlns=\"http://www.w3.org/2000/svg\" #{html_attributes}>#{@path}</svg>"
     end
 
     private def html_attributes
