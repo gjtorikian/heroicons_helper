@@ -19,8 +19,9 @@ const { argv } = yargs
     type: "array",
     describe: "Input SVG files",
     default: [
-      "node_modules/heroicons/outline/*.svg",
-      "node_modules/heroicons/solid/*.svg",
+      "node_modules/heroicons/24/outline/*.svg",
+      "node_modules/heroicons/24/solid/*.svg",
+      "node_modules/heroicons/20/solid/*.svg",
     ],
   })
   .option("output", {
@@ -38,45 +39,28 @@ const svgFilepaths = filepaths.filter(
 
 if (svgFilepaths.length === 0) {
   // eslint-disable-next-line no-console
-  console.error(`No input SVG file(s) found in ${icon_file_path.join(", ")}`);
+  console.error(`No input SVG file(s) found in ${filepaths.join(", ")}`);
   process.exit(1);
 }
 
 let exitCode = 0;
 
-const validTypes = ["solid", "outline"];
-const defaultOutlineWidth = "24";
-const defaultSolidWidth = "20";
+const validTypes = ["solid", "outline", "mini"];
+const defaultOutlineWidth = parseInt("24");
+const defaultSolidWidth = parseInt("24");
+const defaultMiniWidth = parseInt("20");
 
 const icons = svgFilepaths.map((filepath) => {
   try {
-    let filename = path.parse(filepath).base;
-    const type = path.parse(filepath).dir.split("/").pop();
-    let widthSize;
-    switch (type) {
-      case "outline":
-        widthSize = defaultOutlineWidth;
-        break;
-      case "solid":
-        widthSize = defaultSolidWidth;
-        break;
-      default:
-        throw new Error(`Unknown icon type: ${type}`);
-    }
-
-    const filenamePattern = /(.+)(?:-[0-9]{1,2})?-([0-9]{2}).svg$/;
-    const filenameReplacePattern = /\.svg$/;
-
-    if (!filenamePattern.test(filename)) {
-      filename = filename.replace(filenameReplacePattern, `-${widthSize}.svg`);
-    }
-
-    const [, name, height] = filename.match(filenamePattern);
+    const filename = path.parse(filepath).base;
+    let splitDir = path.parse(filepath).dir.split("/");
+    let type = splitDir.pop();
+    const size = splitDir.pop();
 
     const svg = fs.readFileSync(path.resolve(filepath), "utf8");
     const svgElement = cheerio.load(svg)("svg");
-    let svgWidth = parseInt(svgElement.attr("width"));
-    let svgHeight = parseInt(svgElement.attr("height"));
+    let svgWidth = parseInt(svgElement.attr("width")) || parseInt(size);
+    let svgHeight = parseInt(svgElement.attr("height")) || parseInt(size);
     const svgViewBox = svgElement.attr("viewBox");
     const svgPath = trimNewlines(svgElement.html()).trim();
 
@@ -92,12 +76,6 @@ const icons = svgFilepaths.map((filepath) => {
 
     if (!svgViewBox) {
       throw new Error(`${filename}: Missing viewBox attribute.`);
-    }
-
-    if (svgHeight != parseInt(height)) {
-      throw new Error(
-        `${filename}: Height in filename (${height}) does not match height attribute of SVG (${svgHeight})`
-      );
     }
 
     const viewBoxPattern = /0 0 ([0-9]+) ([0-9]+)/;
@@ -121,6 +99,11 @@ const icons = svgFilepaths.map((filepath) => {
         `${filename}: height attribute and viewBox height do not match.`
       );
     }
+
+    if (svgWidth == defaultMiniWidth && type == "solid") {
+      type = "mini";
+    }
+    const name = filename.slice(0, -4);
 
     return {
       name,

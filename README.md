@@ -37,7 +37,7 @@ where
 This one method call returns an object that represents the Heroicon, and you should call `to_svg` to get the resulting SVG string:
 
 ```ruby
-outline_icon = heroicon("x", variant: HeroiconsHelper::Icon::VARIANT_OUTLINE)
+outline_icon = heroicon("x-mark", variant: HeroiconsHelper::Icon::VARIANT_OUTLINE)
 puts outline_icon.to_svg
 ```
 ```

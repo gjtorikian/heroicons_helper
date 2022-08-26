@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "set"
+
 module HeroiconsHelper
   # Icon to show heroicons by name and variant.
   class Icon
@@ -7,7 +9,8 @@ module HeroiconsHelper
 
     VARIANT_OUTLINE = "outline"
     VARIANT_SOLID = "solid"
-    VARIANTS = [VARIANT_OUTLINE, VARIANT_SOLID].freeze
+    VARIANT_MINI = "mini"
+    VALID_VARIANTS = Set.new([VARIANT_OUTLINE, VARIANT_SOLID, VARIANT_MINI]).freeze
 
     def initialize(name, variant, attributes: {})
       @name = name.to_s
@@ -52,7 +55,7 @@ module HeroiconsHelper
       accessible
     end
 
-    # prepare the octicon class
+    # prepare the heroicon class
     private def classes
       "heroicon heroicon-#{@name}-#{@variant} #{@attributes[:class]} ".strip
     end
@@ -64,7 +67,7 @@ module HeroiconsHelper
           fill: "none",
           stroke: "currentColor",
         }
-      when VARIANT_SOLID
+      when VARIANT_SOLID, VARIANT_MINI
         {
           fill: "currentColor",
         }
@@ -75,7 +78,7 @@ module HeroiconsHelper
       "0 0 #{@width} #{@height}"
     end
 
-    # determine the height and width of the octicon based on :size option
+    # determine the height and width of the heroicon based on :size option
     private def size
       size = {
         width: @width,
@@ -104,7 +107,7 @@ module HeroiconsHelper
     private def get_heroicon(name, variant)
       raise ArgumentError, "Icon name can't be empty" if name.empty?
 
-      raise ArgumentError, "Variant `#{variant.inspect}` is invalid; must be one of #{VARIANTS.join(", ")}" unless VARIANTS.include?(variant)
+      raise ArgumentError, "Variant `#{variant.inspect}` is invalid; must be one of #{VALID_VARIANTS.join(", ")}" unless VALID_VARIANTS.include?(variant)
 
       icon = HeroiconsHelper::ICON_NAMES[name]
 
