@@ -31,7 +31,7 @@ heroicon(icon, variant, attributes: {})
 where
 
 * `icon` is the Heroicon name (eg. `:bell` or `"bell")
-* `variant` is the type of Heroicons (eg., `outline` or `solid`)
+* `variant` is the type of Heroicons (eg., `outline`, `solid`, or `mini`)
 * `attributes` are any additional HTML attributes to add on to the resulting `svg` element
 
 This one method call returns an object that represents the Heroicon, and you should call `to_svg` to get the resulting SVG string:
