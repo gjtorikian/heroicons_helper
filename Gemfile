@@ -5,6 +5,10 @@ source "https://rubygems.org"
 # Specify your gem's dependencies in heroicons_helper.gemspec
 gemspec
 
+group :development do
+  gem "bundler", "~> 2.0"
+end
+
 group :development, :test do
   gem "amazing_print"
   gem "debug"

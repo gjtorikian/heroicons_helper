@@ -7,6 +7,18 @@ describe HeroiconsHelper::Icon do
     HeroiconsHelper::Cache.clear!
   end
 
+  it "is safe path" do
+    icon = heroicon("x-mark", variant: HeroiconsHelper::Icon::VARIANT_SOLID)
+    assert_equal icon.path.class, ActiveSupport::SafeBuffer
+    refute_equal icon.path.class, String
+  end
+
+  it "is unsafe path" do
+    icon = heroicon("x-mark", variant: HeroiconsHelper::Icon::VARIANT_SOLID, unsafe: true)
+    refute_equal icon.path.class, ActiveSupport::SafeBuffer
+    assert_equal icon.path.class, String
+  end
+
   it "initialize accepts a string for an icon name" do
     icon = heroicon("x-mark", variant: HeroiconsHelper::Icon::VARIANT_SOLID)
     assert icon

@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "set"
+require "active_support/core_ext/string/output_safety"
 
 module HeroiconsHelper
   # Icon to show heroicons by name and variant.
@@ -12,13 +13,14 @@ module HeroiconsHelper
     VARIANT_MINI = "mini"
     VALID_VARIANTS = Set.new([VARIANT_OUTLINE, VARIANT_SOLID, VARIANT_MINI]).freeze
 
-    def initialize(name, variant, attributes: {})
+    def initialize(name, variant, unsafe: false, attributes: {})
       @name = name.to_s
       @variant = variant.to_s
+      @unsafe = unsafe
 
       heroicon = get_heroicon(@name, @variant)
 
-      @path = heroicon["path"]
+      @path = safe? ? ActiveSupport::SafeBuffer.new(heroicon["path"]) : heroicon["path"]
       @width = heroicon["width"]
       @height = heroicon["height"]
       @keywords = heroicon["keywords"]
@@ -34,6 +36,10 @@ module HeroiconsHelper
     # Returns an string representing a <svg> tag
     def to_svg
       "<!-- Heroicon name: #{@variant}/#{@name} --><svg xmlns=\"http://www.w3.org/2000/svg\" #{html_attributes}>#{@path}</svg>"
+    end
+
+    private def safe?
+      !@unsafe
     end
 
     private def html_attributes

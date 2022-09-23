@@ -37,8 +37,9 @@ module HeroiconsHelper
     end
 
     def test_get_key_returns_the_correct_key
-      assert_equal({ name: :alert, variant: :solid }.hash, HeroiconsHelper::Cache.get_key(name: :alert, variant: :solid))
-      assert_equal({ name: :alert, variant: :outline }.hash, HeroiconsHelper::Cache.get_key(name: :alert, variant: :outline))
+      assert_equal({ name: :alert, variant: :solid, safe: true }.hash, HeroiconsHelper::Cache.get_key(name: :alert, variant: :solid))
+      assert_equal({ name: :alert, variant: :outline, safe: true }.hash, HeroiconsHelper::Cache.get_key(name: :alert, variant: :outline))
+      assert_equal({ name: :alert, variant: :outline, unsafe: true }.hash, HeroiconsHelper::Cache.get_key(name: :alert, variant: :outline, unsafe: true))
     end
 
     def test_does_not_duplicate_cached_items

@@ -6,8 +6,15 @@ module HeroiconsHelper
     LOOKUP = {}
 
     class << self
-      def get_key(name:, variant:, width: nil, height: nil)
-        attrs = { name: name, variant: variant, width: width, height: height }
+      def get_key(name:, variant:, unsafe: false, width: nil, height: nil)
+        attrs = { name: name, variant: variant, unsafe: unsafe, width: width, height: height }
+        if unsafe
+          attrs[:unsafe] = true
+        else
+          attrs.delete(:unsafe)
+          attrs[:safe] = true
+        end
+
         attrs.compact!
         attrs.hash
       end
@@ -52,8 +59,9 @@ module HeroiconsHelper
           cache_key = HeroiconsHelper::Cache.get_key(
             name: icon["name"],
             variant: icon["variant"],
+            unsafe: icon["unsafe"] || false,
             height: height,
-            width: width
+            width: width,
           )
 
           cache_icon = HeroiconsHelper::Cache.read(cache_key)
