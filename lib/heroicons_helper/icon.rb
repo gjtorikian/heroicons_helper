@@ -71,7 +71,6 @@ module HeroiconsHelper
       when VARIANT_OUTLINE
         {
           fill: "none",
-          stroke: "currentColor",
         }
       when VARIANT_SOLID, VARIANT_MINI
         {
