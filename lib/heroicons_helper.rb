@@ -14,8 +14,7 @@ module HeroiconsHelper
       name: name,
       variant: variant,
       unsafe: unsafe,
-      height: attributes[:height],
-      width: attributes[:width],
+      attributes: attributes,
     )
 
     cached_heroicon = HeroiconsHelper::Cache.read(cache_key)

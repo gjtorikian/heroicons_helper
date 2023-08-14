@@ -54,6 +54,17 @@ module HeroiconsHelper
       assert_equal(1, HeroiconsHelper::Cache::LOOKUP.size)
     end
 
+
+    def test_does_not_duplicate_cached_items_with_different_attributes
+      HeroiconsHelper::Cache.clear!
+      assert_empty(HeroiconsHelper::Cache::LOOKUP)
+
+      result = HeroiconsHelper::Cache.get_key(name: :"academic-cap", variant: :solid)
+
+      result_two = HeroiconsHelper::Cache.get_key(name: :"academic-cap", variant: :solid, class: "text-red-500")
+      refute_equal(result, result_two)
+    end
+
     def test_cache_evacuates_after_limit_reached
       HeroiconsHelper::Cache.clear!
       HeroiconsHelper::Cache.stub(:limit, 3) do

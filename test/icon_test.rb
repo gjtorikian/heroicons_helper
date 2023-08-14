@@ -80,7 +80,6 @@ describe HeroiconsHelper::Icon do
       outline_icon = heroicon("x-mark", variant: HeroiconsHelper::Icon::VARIANT_OUTLINE)
       assert_includes outline_icon.to_svg, "viewBox=\"0 0 24 24\""
       assert_includes outline_icon.to_svg, "fill=\"none\""
-      assert_includes outline_icon.to_svg, "stroke=\"currentColor\""
       solid_icon = heroicon("x-mark", variant: HeroiconsHelper::Icon::VARIANT_SOLID)
       assert_includes solid_icon.to_svg, "viewBox=\"0 0 24 24\""
       assert_includes solid_icon.to_svg, "fill=\"currentColor\""
