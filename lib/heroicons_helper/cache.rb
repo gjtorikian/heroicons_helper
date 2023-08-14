@@ -6,8 +6,8 @@ module HeroiconsHelper
     LOOKUP = {}
 
     class << self
-      def get_key(name:, variant:, unsafe: false, width: nil, height: nil)
-        attrs = { name: name, variant: variant, unsafe: unsafe, width: width, height: height }
+      def get_key(name:, variant:, unsafe: false, **attributes)
+        attrs = { name: name, variant: variant, unsafe: unsafe }.merge(attributes)
         if unsafe
           attrs[:unsafe] = true
         else

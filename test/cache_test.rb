@@ -22,11 +22,13 @@ module HeroiconsHelper
 
     def test_preload_loads_heroicon_cache
       HeroiconsHelper::Cache.clear!
+
       assert_empty(HeroiconsHelper::Cache::LOOKUP)
 
       HeroiconsHelper::Cache.preload!(@few_data) do |found, icon|
         FakeClass.new(icon) unless found
       end
+
       assert_equal(5, HeroiconsHelper::Cache::LOOKUP.size)
     end
 
@@ -44,6 +46,7 @@ module HeroiconsHelper
 
     def test_does_not_duplicate_cached_items
       HeroiconsHelper::Cache.clear!
+
       assert_empty(HeroiconsHelper::Cache::LOOKUP)
 
       # only the first item is actually new
@@ -51,7 +54,20 @@ module HeroiconsHelper
       HeroiconsHelper::Cache.preload!(items) do |found, icon|
         FakeClass.new(icon) unless found
       end
+
       assert_equal(1, HeroiconsHelper::Cache::LOOKUP.size)
+    end
+
+    def test_does_not_duplicate_cached_items_with_different_attributes
+      HeroiconsHelper::Cache.clear!
+
+      assert_empty(HeroiconsHelper::Cache::LOOKUP)
+
+      result = HeroiconsHelper::Cache.get_key(name: :"academic-cap", variant: :solid)
+
+      result_two = HeroiconsHelper::Cache.get_key(name: :"academic-cap", variant: :solid, class: "text-red-500")
+
+      refute_equal(result, result_two)
     end
 
     def test_cache_evacuates_after_limit_reached
