@@ -7,20 +7,6 @@ describe HeroiconsHelper::Icon do
     HeroiconsHelper::Cache.clear!
   end
 
-  it "is safe path" do
-    icon = heroicon("x-mark", variant: HeroiconsHelper::Icon::VARIANT_SOLID)
-
-    assert_equal icon.path.class, ActiveSupport::SafeBuffer
-    refute_equal icon.path.class, String
-  end
-
-  it "is unsafe path" do
-    icon = heroicon("x-mark", variant: HeroiconsHelper::Icon::VARIANT_SOLID, unsafe: true)
-
-    refute_equal icon.path.class, ActiveSupport::SafeBuffer
-    assert_equal icon.path.class, String
-  end
-
   it "initialize accepts a string for an icon name" do
     icon = heroicon("x-mark", variant: HeroiconsHelper::Icon::VARIANT_SOLID)
 
@@ -36,7 +22,7 @@ describe HeroiconsHelper::Icon do
   it "the attributes are readable" do
     icon = heroicon("x-mark", variant: HeroiconsHelper::Icon::VARIANT_OUTLINE)
 
-    assert icon.path
+    assert icon.inner
     assert icon.attributes
     assert_equal "x-mark", icon.name
     assert_equal "outline", icon.variant
@@ -86,15 +72,18 @@ describe HeroiconsHelper::Icon do
       outline_icon = heroicon("x-mark", variant: HeroiconsHelper::Icon::VARIANT_OUTLINE)
 
       assert_includes outline_icon.to_svg, "viewBox=\"0 0 24 24\""
-      assert_includes outline_icon.to_svg, "fill=\"none\""
+
       solid_icon = heroicon("x-mark", variant: HeroiconsHelper::Icon::VARIANT_SOLID)
 
       assert_includes solid_icon.to_svg, "viewBox=\"0 0 24 24\""
-      assert_includes solid_icon.to_svg, "fill=\"currentColor\""
+
       mini_icon = heroicon("x-mark", variant: HeroiconsHelper::Icon::VARIANT_MINI)
 
       assert_includes mini_icon.to_svg, "viewBox=\"0 0 20 20\""
-      assert_includes mini_icon.to_svg, "fill=\"currentColor\""
+
+      micro_icon = heroicon("x-mark", variant: HeroiconsHelper::Icon::VARIANT_MICRO)
+
+      assert_includes micro_icon.to_svg, "viewBox=\"0 0 16 16\""
     end
   end
 
@@ -124,21 +113,9 @@ describe HeroiconsHelper::Icon do
 
   describe "classes" do
     it "includes classes passed in" do
-      icon = heroicon("x-mark", variant: HeroiconsHelper::Icon::VARIANT_SOLID, class: "text-closed")
+      icon = heroicon("x-mark", variant: HeroiconsHelper::Icon::VARIANT_MICRO, class: "text-closed")
 
-      assert_includes icon.to_svg, "class=\"heroicon heroicon-x-mark-solid text-closed\""
-    end
-  end
-
-  describe "comments" do
-    it "includes variant and icon passed in" do
-      icon = heroicon("x-mark", variant: HeroiconsHelper::Icon::VARIANT_MINI, class: "text-closed")
-
-      assert_includes icon.to_svg, "<!-- Heroicon name: mini/x-mark -->"
-
-      icon = heroicon(:"at-symbol", variant: HeroiconsHelper::Icon::VARIANT_OUTLINE, class: "text-closed")
-
-      assert_includes icon.to_svg, "<!-- Heroicon name: outline/at-symbol -->"
+      assert_includes icon.to_svg, "class=\"heroicon heroicon-micro-x-mark text-closed\""
     end
   end
 
