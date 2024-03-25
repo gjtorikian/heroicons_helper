@@ -6,36 +6,37 @@ require "active_support/core_ext/string/output_safety"
 module HeroiconsHelper
   # Icon to show heroicons by name and variant.
   class Icon
-    attr_reader :path, :attributes, :width, :height, :name, :variant, :keywords
+    attr_reader :inner, :attributes, :width, :height, :name, :variant, :keywords
 
     VARIANT_OUTLINE = "outline"
     VARIANT_SOLID = "solid"
     VARIANT_MINI = "mini"
-    VALID_VARIANTS = Set.new([VARIANT_OUTLINE, VARIANT_SOLID, VARIANT_MINI]).freeze
+    VARIANT_MICRO = "micro"
+    VALID_VARIANTS = Set.new([VARIANT_OUTLINE, VARIANT_SOLID, VARIANT_MINI, VARIANT_MICRO]).freeze
 
-    def initialize(name, variant, unsafe: false, attributes: {})
+    def initialize(name, variant, attributes: {})
       @name = name.to_s
       @variant = variant.to_s
-      @unsafe = unsafe
 
       heroicon = get_heroicon(@name, @variant)
 
-      @path = safe? ? ActiveSupport::SafeBuffer.new(heroicon["path"]) : heroicon["path"]
+      @inner = heroicon["inner"]
       @width = heroicon["width"]
       @height = heroicon["height"]
       @keywords = heroicon["keywords"]
       @attributes = attributes.dup.compact
-      @attributes[:class] = classes
-      @attributes[:viewBox] = viewbox
+      @attributes.merge!({
+        class: classes,
+        viewBox: viewbox,
+        version: "1.1",
+      })
       @attributes.merge!(size)
-      @attributes[:version] = "1.1"
-      @attributes.merge!(variant_attributes)
       @attributes.merge!(a11y)
     end
 
     # Returns an string representing a <svg> tag
     def to_svg
-      "<!-- Heroicon name: #{@variant}/#{@name} --><svg xmlns=\"http://www.w3.org/2000/svg\" #{html_attributes}>#{@path}</svg>"
+      "<svg #{html_attributes}>#{@inner}</svg>"
     end
 
     private def safe?
@@ -63,20 +64,7 @@ module HeroiconsHelper
 
     # prepare the heroicon class
     private def classes
-      "heroicon heroicon-#{@name}-#{@variant} #{@attributes[:class]} ".strip
-    end
-
-    private def variant_attributes
-      case @variant
-      when VARIANT_OUTLINE
-        {
-          fill: "none",
-        }
-      when VARIANT_SOLID, VARIANT_MINI
-        {
-          fill: "currentColor",
-        }
-      end
+      "heroicon heroicon-#{@variant}-#{@name} #{@attributes[:class]} ".strip
     end
 
     private def viewbox
@@ -127,7 +115,8 @@ module HeroiconsHelper
         "keywords" => icon["keywords"] || [],
         "width" => icon_variant["width"],
         "height" => icon_variant["height"],
-        "path" => icon_variant["path"],
+        "attributes" => icon_variant["attributes"],
+        "inner" => icon_variant["inner"],
       }
     end
   end
