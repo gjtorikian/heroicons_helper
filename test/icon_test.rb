@@ -109,6 +109,17 @@ describe HeroiconsHelper::Icon do
       assert_includes icon.to_svg, "disabled=\"true\""
       assert_includes icon.to_svg, "foo=\"bar\""
     end
+
+    it "user does not get final say in some attribute values" do
+      icon = heroicon("x-mark", variant: HeroiconsHelper::Icon::VARIANT_MINI)
+
+      assert_includes icon.to_svg, "version=\"1.1\""
+
+      icon = heroicon("x-mark", variant: HeroiconsHelper::Icon::VARIANT_MINI, attributes: { version: "4.20" })
+
+      refute_includes icon.to_svg, "version=\"4.20\""
+      assert_includes icon.to_svg, "version=\"1.1\""
+    end
   end
 
   describe "classes" do
@@ -125,65 +136,25 @@ describe HeroiconsHelper::Icon do
 
       assert_includes icon.to_svg, "height=\"24\""
       assert_includes icon.to_svg, "width=\"24\""
-    end
 
-    it "converts number string height to integer" do
-      icon = heroicon("x-mark", variant: HeroiconsHelper::Icon::VARIANT_SOLID, height: "60")
+      icon = heroicon("x-mark", variant: HeroiconsHelper::Icon::VARIANT_MICRO)
 
-      assert_includes icon.to_svg, "height=\"60\""
-      assert_includes icon.to_svg, "width=\"60\""
-    end
-
-    it "converts number height to integer" do
-      icon = heroicon("x-mark", variant: HeroiconsHelper::Icon::VARIANT_SOLID, height: 60)
-
-      assert_includes icon.to_svg, "height=\"60\""
-      assert_includes icon.to_svg, "width=\"60\""
-    end
-
-    it "converts number string width to integer" do
-      icon = heroicon("x-mark", variant: HeroiconsHelper::Icon::VARIANT_SOLID, width: "45")
-
-      assert_includes icon.to_svg, "height=\"45\""
-      assert_includes icon.to_svg, "width=\"45\""
-    end
-
-    it "converts number width to integer" do
-      icon = heroicon("x-mark", variant: HeroiconsHelper::Icon::VARIANT_SOLID, width: 45)
-
-      assert_includes icon.to_svg, "height=\"45\""
-      assert_includes icon.to_svg, "width=\"45\""
-    end
-
-    it "with height and width passed in" do
-      icon = heroicon("x-mark", variant: HeroiconsHelper::Icon::VARIANT_SOLID, width: 60, height: 60)
-
-      assert_includes icon.to_svg, "width=\"60\""
-      assert_includes icon.to_svg, "height=\"60\""
-    end
-
-    it "chooses the correct svg given a height" do
-      icon = heroicon("x-mark", variant: HeroiconsHelper::Icon::VARIANT_MINI, height: 32)
-
-      assert_includes icon.to_svg, "width=\"32\""
-      assert_includes icon.to_svg, "height=\"32\""
-      assert_includes icon.to_svg, "viewBox=\"0 0 20 20\""
-    end
-
-    it "chooses the correct svg given a width" do
-      icon = heroicon("x-mark", variant: HeroiconsHelper::Icon::VARIANT_MINI, width: 48)
-
-      assert_includes icon.to_svg, "width=\"48\""
-      assert_includes icon.to_svg, "height=\"48\""
-      assert_includes icon.to_svg, "viewBox=\"0 0 20 20\""
-    end
-
-    it "chooses the correct svg given a height and width" do
-      icon = heroicon("x-mark", variant: HeroiconsHelper::Icon::VARIANT_SOLID, height: 24, width: 16)
-
+      assert_includes icon.to_svg, "height=\"16\""
       assert_includes icon.to_svg, "width=\"16\""
-      assert_includes icon.to_svg, "height=\"24\""
-      assert_includes icon.to_svg, "viewBox=\"0 0 24 24\""
+    end
+
+    it "accepts string size" do
+      icon = heroicon("x-mark", variant: HeroiconsHelper::Icon::VARIANT_SOLID, size: "60")
+
+      assert_includes icon.to_svg, "height=\"60\""
+      assert_includes icon.to_svg, "width=\"60\""
+    end
+
+    it "accepts integer size" do
+      icon = heroicon("x-mark", variant: HeroiconsHelper::Icon::VARIANT_SOLID, size: 60)
+
+      assert_includes icon.to_svg, "height=\"60\""
+      assert_includes icon.to_svg, "width=\"60\""
     end
   end
 

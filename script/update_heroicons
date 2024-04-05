@@ -52,6 +52,11 @@ const defaultSolidWidth = parseInt("24");
 const defaultMiniWidth = parseInt("20");
 const defaultMicroWidth = parseInt("16");
 
+function omit(obj, key) {
+  const { [key]: ignore, ...rest } = obj;
+  return rest;
+}
+
 const icons = svgFilepaths.map((filepath) => {
   try {
     const filename = path.parse(filepath).base;
@@ -61,7 +66,7 @@ const icons = svgFilepaths.map((filepath) => {
 
     const svg = fs.readFileSync(path.resolve(filepath), "utf8");
     const svgElement = cheerio.load(svg)("svg");
-    let svgAttributes = svgElement[0].attribs;
+    let svgAttributes = omit(svgElement[0].attribs, "aria-hidden");
     let svgWidth = parseInt(svgElement.attr("width")) || parseInt(size);
     let svgHeight = parseInt(svgElement.attr("height")) || parseInt(size);
     const svgViewBox = svgElement.attr("viewBox");
