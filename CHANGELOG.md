@@ -1,3 +1,9 @@
+# [v0.9.0] - 03-09-2024
+## What's Changed
+* Update heroicons by @gjtorikian in https://github.com/gjtorikian/heroicons_helper/pull/4
+
+
+**Full Changelog**: https://github.com/gjtorikian/heroicons_helper/compare/v0.8.0...v0.9.0
 ## [v0.8.0] - 05-04-2024
 ## What's Changed
 * Bump the github-actions group with 1 update by @dependabot in https://github.com/gjtorikian/heroicons_helper/pull/2
