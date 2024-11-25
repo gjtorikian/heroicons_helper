@@ -1,6 +1,7 @@
 {
   "name": "heroicons_helper",
   "private": true,
+  "type": "module",
   "devDependencies": {
     "cheerio": "1.0.0",
     "heroicons": "^2.2.0",
