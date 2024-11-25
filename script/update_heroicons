@@ -1,17 +1,17 @@
 #!/usr/bin/env node
 /* eslint-env node */
-const fs = require("fs-extra");
-const path = require("path");
-const globby = require("globby");
-const cheerio = require("cheerio");
-const trimNewlines = require("trim-newlines");
-const yargs = require("yargs");
-const merge = require("lodash.merge");
-const keywords = require("./keywords.json");
+import fs from "fs-extra";
+import path from "path";
+import { globbySync } from "globby";
+import { load as cheerioLoad } from "cheerio";
+import { trimNewlines } from "trim-newlines";
+import yargs from "yargs";
+import merge from "lodash.merge";
+import keywords from "./keywords.json" assert { type: "json" };
 
 // This script generates a JSON file that contains
 // information about input SVG files.
-const { argv } = yargs
+const { argv } = yargs()
   .usage("Usage: $0 --output <output filepath>")
   .example("$0 --input icons/**/*.svg --output build/data.json")
   .option("input", {
@@ -33,7 +33,7 @@ const { argv } = yargs
     default: "lib/heroicons_helper/data.json",
   });
 
-const filepaths = globby.sync(argv.input);
+const filepaths = globbySync(argv.input);
 const svgFilepaths = filepaths.filter(
   (filepath) => path.parse(filepath).ext === ".svg"
 );
@@ -65,7 +65,7 @@ const icons = svgFilepaths.map((filepath) => {
     const size = splitDir.pop();
 
     const svg = fs.readFileSync(path.resolve(filepath), "utf8");
-    const svgElement = cheerio.load(svg)("svg");
+    const svgElement = cheerioLoad(svg)("svg");
     let svgAttributes = omit(svgElement[0].attribs, "aria-hidden");
     let svgWidth = parseInt(svgElement.attr("width")) || parseInt(size);
     let svgHeight = parseInt(svgElement.attr("height")) || parseInt(size);

@@ -1,9 +1,10 @@
 {
   "name": "heroicons_helper",
   "private": true,
+  "type": "module",
   "devDependencies": {
     "cheerio": "1.0.0",
-    "heroicons": "^2.0.0",
+    "heroicons": "^2.2.0",
     "fs-extra": "^11.2.0",
     "globby": "14.0.2",
     "lodash.merge": "4.6.2",
