@@ -9,6 +9,6 @@
     "globby": "14.1.0",
     "lodash.merge": "4.6.2",
     "trim-newlines": "5.0.0",
-    "yargs": "17.7.2"
+    "yargs": "18.0.0"
   }
 }
